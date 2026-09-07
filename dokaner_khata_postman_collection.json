@@ -1,0 +1,709 @@
+{
+	"info": {
+		"_postman_id": "dokaner-khata-backend-api-v1",
+		"name": "Dokaner Khata API Collection",
+		"description": "Complete Postman collection for Dokaner Khata Backend API.\nBase URL: http://localhost:5050",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5050",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "customerId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "entryId",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "0. System & Health",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/health",
+							"host": ["{{baseUrl}}"],
+							"path": ["health"]
+						}
+					}
+				},
+				{
+					"name": "API Root Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/",
+							"host": ["{{baseUrl}}"],
+							"path": [""]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "1. Authentication",
+			"item": [
+				{
+					"name": "Signup (Register)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData && jsonData.data && jsonData.data.token) {",
+									"    pm.collectionVariables.set('token', jsonData.data.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"রনি আহমেদ\",\n  \"phone\": \"01712345678\",\n  \"password\": \"123456\",\n  \"storeName\": \"রনি জেনারেল স্টোর\",\n  \"email\": \"roni@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/signup",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "auth", "signup"]
+						}
+					}
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData && jsonData.data && jsonData.data.token) {",
+									"    pm.collectionVariables.set('token', jsonData.data.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"phone\": \"01712345678\",\n  \"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Get Current User & Store (Me)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/me",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "auth", "me"]
+						}
+					}
+				},
+				{
+					"name": "Forgot Password (Request OTP)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"phone\": \"01712345678\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/forgot-password",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "auth", "forgot-password"]
+						}
+					}
+				},
+				{
+					"name": "Verify OTP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"phone\": \"01712345678\",\n  \"otp\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/verify-otp",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "auth", "verify-otp"]
+						}
+					}
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"phone\": \"01712345678\",\n  \"otp\": \"123456\",\n  \"newPassword\": \"654321\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/reset-password",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "auth", "reset-password"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "2. Store Profile",
+			"item": [
+				{
+					"name": "Get Store Info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/store",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "store"]
+						}
+					}
+				},
+				{
+					"name": "Update Store Info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"storeName\": \"রনি সুপার স্টোর\",\n  \"phone\": \"01712345678\",\n  \"greeting\": \"আসসালামু আলাইকুম,\",\n  \"address\": \"মিরপুর ১০, ঢাকা\",\n  \"settings\": {\n    \"language\": \"bn\",\n    \"currency\": \"BDT\",\n    \"smsAlertEnabled\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/store",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "store"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "3. Customers",
+			"item": [
+				{
+					"name": "Get All Customers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/customers?search=&filter=byDue&page=1&limit=20",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "customers"],
+							"query": [
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search by name or phone"
+								},
+								{
+									"key": "filter",
+									"value": "byDue",
+									"description": "byDue, byName, or recent"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Customer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData && jsonData.data && jsonData.data._id) {",
+									"    pm.collectionVariables.set('customerId', jsonData.data._id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"করিম সাহেব\",\n  \"phone\": \"01811223344\",\n  \"address\": \"রোড ৫, বাড়ি ১২, মিরপুর\",\n  \"totalDue\": 500,\n  \"avatarColorHex\": 4280391411\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/customers",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "customers"]
+						}
+					}
+				},
+				{
+					"name": "Get Customer By ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/customers/{{customerId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "customers", "{{customerId}}"]
+						}
+					}
+				},
+				{
+					"name": "Update Customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"করিম উদ্দিন\",\n  \"phone\": \"01811223344\",\n  \"address\": \"নতুন বাজার, মিরপুর\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/customers/{{customerId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "customers", "{{customerId}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete Customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/customers/{{customerId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "customers", "{{customerId}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "4. Transactions (Entries)",
+			"item": [
+				{
+					"name": "Get All Entries",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/entries?customerId={{customerId}}&limit=20&page=1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "entries"],
+							"query": [
+								{
+									"key": "customerId",
+									"value": "{{customerId}}",
+									"description": "Filter by specific customer ID (Optional)"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Entry (Gave / বাকিতে দিলাম)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData && jsonData.data && jsonData.data._id) {",
+									"    pm.collectionVariables.set('entryId', jsonData.data._id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"amount\": 1500,\n  \"type\": \"gave\",\n  \"note\": \"চাল ও তেল ক্রয়\",\n  \"date\": \"2026-09-07T12:00:00.000Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/entries",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "entries"]
+						}
+					}
+				},
+				{
+					"name": "Create Entry (Got / জমা পেলাম)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"amount\": 500,\n  \"type\": \"got\",\n  \"note\": \"বকেয়া পরিশোধ\",\n  \"date\": \"2026-09-07T14:30:00.000Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/entries",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "entries"]
+						}
+					}
+				},
+				{
+					"name": "Delete Entry",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/entries/{{entryId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "entries", "{{entryId}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "5. Reports & Analytics",
+			"item": [
+				{
+					"name": "Get Dashboard Summary",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/reports/dashboard",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "reports", "dashboard"]
+						}
+					}
+				},
+				{
+					"name": "Get Monthly Report",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/reports/monthly?year=2026&month=9",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "reports", "monthly"],
+							"query": [
+								{
+									"key": "year",
+									"value": "2026"
+								},
+								{
+									"key": "month",
+									"value": "9"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Top Dues",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/reports/top-dues?limit=10",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "reports", "top-dues"],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "6. Offline Sync",
+			"item": [
+				{
+					"name": "Batch Sync (SQLite to Cloud)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"customers\": [\n    {\n      \"id\": \"sqlite_cust_101\",\n      \"name\": \"রহিম মিয়া\",\n      \"phone\": \"01988776655\",\n      \"total_due\": 1200,\n      \"initial_letters\": \"রম\"\n    }\n  ],\n  \"entries\": [\n    {\n      \"id\": \"sqlite_entry_501\",\n      \"customer_id\": \"sqlite_cust_101\",\n      \"amount\": 1200,\n      \"type\": \"gave\",\n      \"note\": \"অফলাইন বাকির এন্ট্রি\",\n      \"date\": \"2026-09-07T10:00:00.000Z\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/sync",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "sync"]
+						}
+					}
+				}
+			]
+		}
+	]
+}
